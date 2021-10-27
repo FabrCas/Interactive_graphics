@@ -4,12 +4,6 @@ Repository which contains code files for implementations about the "Interactive 
 # Final project: The Crazy Ball Lab
 
 <br />
-<br />
-<p align="center">
-  <a href="https://github.com/SapienzaInteractiveGraphicsCourse/final-project-viralcats">
-    <img alt="The Crazy Ball Lab" title="The Crazy Ball Lab" src="./asserts/imgs/title.png" width="450">
-  </a>
-</p>
 
 Final project for the course of Interactive Graphics 2020/2021.
 
