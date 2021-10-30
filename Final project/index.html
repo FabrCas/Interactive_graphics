@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Final Project</title>
+        
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Edoardo Papa & Fabrizio Casadei">
+
+    <link rel='icon' type='image/png' href='./favicon.png' />
+    <script src="./libs/three.min.js"></script>
+    <script src="./libs/threejs/build/three.module.js"></script>
+    <script src="./libs/tween.umd.js"></script>
+    <script type="text/javascript" src="./libs/physi.js"></script>
+    <script src="./libs/swiped-events.js"></script>
+    <script src="./utils.js" type="module"></script>
+    
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  </head>
+
+<style>
+p{
+  font-size: 1.00rem!important;
+}
+.sphere_img{
+    
+    width: 10%;
+    position: absolute;
+}
+
+
+.slide-in-bottom {
+	-webkit-animation: slide-in-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: slide-in-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+@-webkit-keyframes slide-in-bottom{0%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}100%{-webkit-transform:translateY(0px);transform:translateY(0);opacity:1}}@keyframes slide-in-bottom{0%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}
+
+
+.slide-out-bl{-webkit-animation:slide-out-bl .5s cubic-bezier(.55,.085,.68,.53) both;animation:slide-out-bl .5s cubic-bezier(.55,.085,.68,.53) both}
+@-webkit-keyframes slide-out-bl{0%{-webkit-transform:translateY(0) translateX(0);transform:translateY(0) translateX(0);opacity:1}100%{-webkit-transform:translateY(1000px) translateX(-1000px);transform:translateY(1000px) translateX(-1000px);opacity:0}}@keyframes slide-out-bl{0%{-webkit-transform:translateY(0) translateX(0);transform:translateY(0) translateX(0);opacity:1}100%{-webkit-transform:translateY(1000px) translateX(-1000px);transform:translateY(1000px) translateX(-1000px);opacity:0}}
+
+
+ .img {
+    display: grid;
+    width: 35%;
+    vertical-align: middle;
+    margin-left: auto;
+    margin-right: auto;
+}
+.center-fit {
+    max-width: 100%;
+    max-height: 100%;
+    /* margin: auto; */
+    vertical-align: middle;
+}
+.resize_fit_center {
+    max-width:100%;
+    max-height:100%;
+    margin: auto;
+    vertical-align: middle;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: 'Press Start 2P', cursive;
+}
+
+.header_obj { grid-area: header; }
+.main_obj   { grid-area: main; }
+
+.grid-container {
+  width: 100%;
+  /* height: 100%; */
+  display: grid;
+  grid-template-areas:
+    'header'
+    'main'
+    'main'
+    'main'
+    'main'
+    'main';
+  grid-gap: 10px;
+  /* background-color: #2196F3; */
+  padding: 10px;
+}
+
+/* .grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+} */
+
+#c {
+  width: 99%;
+  height: 99%;
+  /* display: block; */
+}
+
+#footer{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+        .loading-modal{
+          height:100%;
+        }
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 25px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: rgb(170, 4, 4);
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: rgb(170, 4, 4);
+            cursor: pointer;
+        }
+
+        .btn-retro {
+            background: #7C7C7C;
+            border-bottom: 6px inset rgba(0, 0, 0, .5);
+            border-left: 6px inset rgba(0, 0, 0, .5);
+            border-right: 6px inset rgba(255, 255, 255, .5);
+            border-top: 6px inset rgba(255, 255, 255, .5);
+            box-sizing: border-box;
+            color: white;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 1.2rem;
+            margin: 1rem;
+            min-width: 200px;
+            padding: .5rem;
+            text-transform: uppercase;
+            width: auto;
+        }
+
+        .btn-retro-levels {
+            background: #7C7C7C;
+            border-bottom: 6px inset rgba(0, 0, 0, .5);
+            border-left: 6px inset rgba(0, 0, 0, .5);
+            border-right: 6px inset rgba(255, 255, 255, .5);
+            border-top: 6px inset rgba(255, 255, 255, .5);
+            box-sizing: border-box;
+            color: white;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 1.0rem;
+            margin: 1rem;
+            min-width: 100px;
+            padding: .5rem;
+            text-transform: uppercase;
+            width: auto;
+        }
+
+        .btn-retro:focus{
+            background: #BCBCBC;
+        }
+        .btn-retro:hover {
+            background: #BCBCBC;
+        }
+
+        .btn-retro-primary {
+            background: #881400;
+        }
+
+        .btn-retro-primary:focus{
+            background: #b91c00;
+        }
+        .btn-retro-primary:hover {
+            background: #b91c00;
+        }
+
+        .btn-retro-secondary {
+            background: #005800;
+        }
+
+        .btn-retro-secondary:focus{
+            background: #008300;
+        }
+        .btn-retro-secondary:hover {
+            background: #008300;
+        }
+
+        .btn-retro-tertiary {
+            background: #0000BC;
+        }
+
+        .btn-retro-tertiary:focus{
+            background: #0000FC;
+        }
+        .btn-retro-tertiary:hover {
+            background: #0000FC;
+        }
+
+        .btn-retro-level_1 {
+            background: #041f79;
+        }
+
+        .btn-retro-level_1:focus{
+            background: #041b64;
+        }
+        .btn-retro-level_1:hover {
+            background: #041b64;
+        }
+
+        .btn-retro-level_2 {
+            background: #975d05;
+        }
+
+        .btn-retro-level_2:focus{
+            background: #865305;
+        }
+        .btn-retro-level_2:hover {
+            background: #865305;
+        }
+
+        .btn-retro-level_3 {
+            background: #c53105;
+        }
+
+        .btn-retro-level_3:focus{
+            background: #af2d05;
+        }
+        .btn-retro-level_3:hover {
+            background: #af2d05;
+        }
+        
+
+        .btn-retro-gray {
+            background: #77777a;
+        }
+
+        .btn-retro-gray:focus{
+            background: #656566;
+        }
+        .btn-retro-gray:hover {
+            background: #434344;
+        }
+        .sliderValue{
+            min-width: 64px;
+        }
+
+        .progress {height: 30px;} 
+        .progress .sr-only { position: relative; }
+        .modal-dialog {
+          height: 90%; /* = 90% of the .modal-backdrop block = %90 of the screen */
+        }
+        .modal-content{
+          height:99%;
+        }
+        .centered {
+          position: fixed;
+          top: 40%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          transform: -webkit-translate(-50%, -50%);
+          transform: -moz-translate(-50%, -50%);
+          transform: -ms-translate(-50%, -50%);
+        }
+
+</style>
+  
+<body id="body"class="d-flex h-100 text-white bg-dark ">
+
+<div id="loadingModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-body loading-modal  bg-dark">
+          <div class="d-flex justify-content-center ">
+            <div class="centered mt-3 mb-3 bg-dark rounded">
+                <div class="p-3">
+                    <h2>Loading Level...</h2>
+                </div>
+                <br>
+                <div class="progress">
+                  <div id="loading-levels-bar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div id="settingsModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-body  bg-dark">
+          <div class="d-flex justify-content-center ">
+            <div class="mt-3 mb-3 bg-dark rounded">
+                <div class="p-3">
+                    <h2>Settings</h2>
+                </div>
+                <div class="m-2 p-3 ">
+                    <div>
+                        <p>Fov:</p>
+                        <div class="d-flex flex-row">
+                            <input id="fovInputSlider"type="range" min="1" max="100" value="20" oninput="changeRange('fov','fovValue')"
+                                class="slider mr-2" id="fov">
+                            <p class="sliderValue"><span id="fovValue">20</span></p>
+                        </div>
+                    </div>
+                    <div>
+                        <p>Far:</p>
+                        <div class="d-flex flex-row">
+                            <input id="farInputSlider"type="range" min="200" max="20000" value="10000" oninput="changeRange('far','farValue')"
+                                class="slider mr-2" id="far">
+                            <p class="sliderValue"><span id="farValue">10000</span></p>
+                        </div>
+                    </div>
+                    <div>
+                        <p>Near:</p>
+                        <div class="d-flex flex-row">
+                            <input id="nearInputSlider"type="range" min="0.1" max="500" value="0.1" step="0.1" oninput="changeRange('near','nearValue')"
+                                class="slider mr-2" id="near">
+                            <p class="sliderValue"><span id="nearValue">0.1</span></p>
+                        </div>
+                    </div>
+                    <div>
+                        <p>Volume:</p>
+                        <div class="d-flex flex-row">
+                            <input id="volumeInputSlider" type="range" min="1" max="100" value="100" oninput="changeRange('volume','volumeValue')"
+                                class="slider mr-2" id="volume">
+                            <p class="sliderValue"><span id="volumeValue">100</span>%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-2 p-3 rounded border border-dark">
+                    <div>
+                        <h3>Game difficulty</h3>
+                    </div>
+                    <div>
+                        <p>Life:<span id="lifePoint">3</span></p>
+        
+                    </div>
+                    <div>
+                        <p>Bonus lives dropping Cyber Guy:<span id="zombiePoint">+3</span></p>
+                    </div>
+                    <div>
+                        <button id="easy" class="btn-retro btn-retro-secondary">Easy</button>
+                        <button id="normal" class="btn-retro btn-retro-tertiary">Normal</button>
+                        <button id="hard" class="btn-retro btn-retro-primary">Hard</button>
+                    </div>
+                </div>
+                <div class="m-2 p-3 rounded border border-dark">
+                      Go to Level:
+                  <div>
+                    <button id="select_level_1" class="btn-retro-levels btn-retro-level_1">Level 1</button>
+                    <button id="select_level_2" class="btn-retro-levels btn-retro-level_2">Level 2</button>
+                    <button id="select_level_3" class="btn-retro-levels btn-retro-level_3">Level 3</button>
+                </div>
+              </div>
+            </div>
+        
+        </div>
+        </div>
+        <div class="modal-footer bg-dark d-flex justify-content-center ">
+          <button id="apply"type="button" data-dismiss="modal" class="btn-retro btn-retro-gray">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div id="grid_container" class="grid-container" style="display: none;">
+      <div class="header_obj d-flex flex-row ">
+
+        
+        <div id="life_counter"class="toast show ml-2" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-body text-center">
+            <img src="asserts/game/heart-16.png" class="rounded mr-2" alt="">
+            <strong class="mr-auto">Current Lives: </strong>
+              <h2 id="curr_life">3</h2>
+          </div>
+        </div>
+        
+        <div id="zombie_counter"class="toast show ml-2" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-body text-center">
+            <img src="asserts/game/zombie.png" class="rounded mr-2" alt="">
+            <strong class="mr-auto">Bonus lives dropping Cyber Guy: </strong>
+              <h2 id="curr_zombie">+3</h2>
+          </div>
+        </div>
+
+        <div id="level_info"class="toast show ml-2" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-body text-center">
+            <img src="asserts/game/levels.png" class="rounded mr-2" alt="">
+            <strong class="mr-auto">Current Level: </strong>
+              <h2 id="curr_level_info">0</h2>
+          </div>
+        </div>
+
+        <div id="none"class="toast ml-2" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-body">
+            <img src="asserts/game/heart-16.png" class="rounded mr-2" alt="">
+            <strong class="mr-auto"> </strong>
+              <h2 id="_">0</h2>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="main_obj">
+
+        <canvas class="hidden"id="c" ></canvas>
+
+      </div> 
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- #######################      INTRO PAGE      ####################################################################################################################### -->
+    <div id="intro_page" class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column hidden">
+      <header class="mx-auto">
+        <div>
+          <h3 class="float-md-start mb-0">Final Project Of Interactive Graphics Course</h3>
+        </div>
+      </header>
+    
+      <main> 
+        <div class="mt-5">
+          <img src="asserts/imgs/title.png" class="img-fluid img-responsive img" alt="Responsive image">
+        </div>
+        <div class="text-center">
+          <p class="lead mb-3">The Crazy Ball Lab is a simple platform game that everyone can play and have fun with!</p>
+          
+          <p class="lead">These are the simple information that you need to know: <br>- You can move the sphere with A S D W <br>- You can change the camera view using the mouse <br>- In game you have a limited number of lives to complete all the levels</p>
+          
+        </div>
+        
+
+
+        <div class="header_obj d-flex justify-content-center">
+
+        
+          <div id="life_counter_info"class="toast show mb-0 text-dark" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body text-center">
+              
+              <p><img src="asserts/game/heart-16.png" class="rounded mr-2" alt="">Current Life:</p>
+                <h2 id="curr_life_info">3</h2>
+            </div>
+          </div>
+          
+          <div id="zombie_counter_info"class="toast show ml-2 mb-0 text-dark" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body text-center">
+             
+              <p> <img src="asserts/game/zombie.png" class="rounded mr-2" alt="">Bonus lives dropping the Cyber Guy:</p>
+                <h2 id="curr_zombie_info">+3</h2>
+            </div>
+          </div>
+  
+  
+        </div>
+               
+        <div class="text-center mt-4">
+          <button id="game_settings" type="button" class="btn-retro btn-retro-tertiary" onclick="javascript: $('#settingsModal').modal();">Settings</button>
+        </div>
+        
+        <img id="sphere" class="sphere_img slide-out-bl"src="asserts/imgs/sphere.png">
+
+        <div class="text-center mt-4">
+          <button id="game_start"type="button" class="btn-retro ">Let's start the game!</button>
+        </div> 
+
+
+      </main>
+
+      <br>
+      <div>
+        <footer class="text-center  text-white-50">
+          <p>This game was made by <a href="https://www.linkedin.com/in/edoardo-papa-74b7b814b" class="text-white">Edoardo Papa</a> and <a href="https://www.linkedin.com/in/fabrizio-casadei-056778179" class="text-white">Fabrizio Casadei</a>.</p>
+        </footer>
+      </div>
+    </div>
+
+      
+      
+          
+    <!-- ############################     PROGRESS BAR (INIT)       ###################################################################################-->
+
+    <div class="progress position-absolute" style="width: 100%;height: 15%;" id="loadings">
+      <div id="sounds_progressbar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">Loading Sounds</div>
+    </div>
+
+
+    <div id="game_over" class="hidden" style="display: none;">
+            <p class="center">Center this text!</p>
+    </div>
+
+    <script>
+        function changeRange(idVal,idText){
+            $('#'+idText).text($('#'+idVal).val())
+        }
+
+        
+        document.getElementById('game_start').addEventListener("mouseover", function(){document.getElementById('sphere').classList.remove('slide-out-bl');document.getElementById('sphere').classList.add('slide-in-bottom')}, false);
+        document.getElementById('game_start').addEventListener("mouseout", function(){document.getElementById('sphere').classList.remove('slide-in-bottom');document.getElementById('sphere').classList.add('slide-out-bl')}, false);
+
+
+
+    </script>
+
+
+    <script src="./settings.js" type="module"></script>
+    <script src="./levels_manager.js" type="module"></script>
+
+
+<!-- Bootstrap stuff -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+
+  </body>
+</html>
