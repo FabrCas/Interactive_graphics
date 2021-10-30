@@ -1,0 +1,226 @@
+            h1 {
+                text-align:center;
+                color:green;
+            }
+            body {
+                width:70%;
+            }
+            button{
+                width:120px;
+                height: 60px;
+            }
+            .container .box {
+                
+                margin:50px;
+                display:table;
+            }
+            .center {
+              margin: 0;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              -ms-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%);
+            }
+            .container .box .box-row {
+                max-height: 550px;
+                display: flex;
+            }
+            .container .box .box-cell {
+                flex: 1;
+                display:table-cell;
+                width:60%;
+                padding:20px;
+            }
+            .container .box .box-cell.box0{
+                background:black;
+                color:white;
+                text-align:justify;
+            }
+            .container .box .box-cell.box1 {
+                background:darkgreen;
+                color:white;
+                font-size: 15px;
+                top: 50%;
+                padding-top:  200px;
+                vertical-align: middle;
+                width: 150px;
+                text-align:center;
+             }
+            .container .box .box-cell.box2 {
+                background:green;
+                color:white;
+                width: 150px;
+                text-align:justify
+            }
+            .container .box .box-cell.box3 {
+                background:lightgreen;
+                color:black;
+                width: 150px;
+                text-align:justify
+            }
+             /* The switch - the box around the slider */
+            .switch {
+              position: relative;
+              display: inline-block;
+              width: 60px;
+              height: 34px;
+            }
+
+            /* Hide default HTML checkbox */
+            .switch input {
+              opacity: 0;
+              width: 0;
+              height: 0;
+            }
+
+            /* The slider */
+            .slider {
+              position: absolute;
+              cursor: pointer;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background: black;
+              background-color: black;
+              -webkit-transition: .4s;
+              transition: .4s;
+            }
+
+            .slider:before {
+              position: absolute;
+              content: "";
+              height: 26px;
+              width: 26px;
+              left: 4px;
+              bottom: 4px;
+              background-color: white;
+              -webkit-transition: .4s;
+              transition: .4s;
+            }
+
+            input:checked + .slider {
+              background-color: lightgreen;
+            }
+
+            input:focus + .slider {
+              box-shadow: 0 0 1px #2196F3;
+            }
+
+            input:checked + .slider:before {
+              -webkit-transform: translateX(26px);
+              -ms-transform: translateX(26px);
+              transform: translateX(26px);
+            }
+
+            /* Rounded sliders */
+            .slider.round {
+              border-radius: 34px;
+            }
+
+            .slider.round:before {
+              border-radius: 50%;
+            }
+
+            .slider2 {
+              -webkit-appearance: none;
+              width: 140px;
+              height: 6px;
+              background: #000;
+              outline: none;
+              border: 5px solid lightgreen;
+              border-radius: 20px;
+            }
+            /* for chrome/safari */
+            .slider2::-webkit-slider-thumb {
+              -webkit-appearance: none;
+              appearance: none;
+              width: 20px;
+              height: 40px;
+              background: #000;
+              cursor: pointer;
+              border: 5px solid lightgreen;
+              border-radius: 4px;
+            }
+
+            /* for firefox */
+            .slider2::-moz-range-thumb {
+              width: 10px;
+              height: 30px;
+              background: #000;
+              cursor: pointer;
+              border: 5px solid lightgreen;
+              border-radius: 4px;
+            }
+
+
+            .slider3 {
+              -webkit-appearance: none;
+              width: 140px;
+              height: 6px;
+              background: #000;
+              outline: none;
+              border: 5px solid white;
+              border-radius: 20px;
+            }
+            /* for chrome/safari */
+            .slider3::-webkit-slider-thumb {
+              -webkit-appearance: none;
+              appearance: none;
+              width: 20px;
+              height: 40px;
+              background: #000;
+              cursor: pointer;
+              border: 5px solid white;
+              border-radius: 4px;
+            }
+
+            /* for firefox */
+            .slider3::-moz-range-thumb {
+              width: 10px;
+              height: 30px;
+              background: #000;
+              cursor: pointer;
+              border: 5px solid white;
+              border-radius: 4px;
+            }
+            .button {
+              position: relative;
+              background-color: black;
+              border: none;
+              font-size: 15px;
+              color: white;
+              margin-top: 2px;
+              padding: 6px;
+              width:145px;
+              height: 60px;
+              text-align: center;
+              transition-duration: 0.4s;
+              text-decoration: none;
+              overflow: hidden;
+              cursor: pointer;
+              border-radius: 15px;
+              margin-bottom: 20px;
+            }
+
+            .button:after {
+              content: "";
+              background: darkgreen;
+              display: block;
+              position: absolute;
+              padding-top: 300%;
+              padding-left: 350%;
+              margin-left: -20px !important;
+              margin-top: -120%;
+              opacity: 0;
+              transition: all 0.8s
+            }
+
+            .button:active:after {
+              padding: 0;
+              margin: 0;
+              opacity: 1;
+              transition: 0s
+            }
+

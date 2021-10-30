@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+                <div class="box">
+                    <div class="box-row">
+                        <div class="box-cell box0">
+                            <canvas id="gl-canvas" width="512" height="512">
+                            Oops ... your browser doesn't support the HTML5 canvas element
+                            </canvas>
+                        </div>
+                        <div class="box-cell box1">
+                            <button id= "startAnimation" class="button">Start the animation</button><br><br>
+                            <button id= "resetAnimation" class="button">Reset the animation</button><br>
+                        </div>
+                        <div class="box-cell box2">
+                        <h2>Rotate camera X axis</h2><input  id = "x_camera_slider" class="slider2" type="range" min="-90.0" max="90.0" step="1" value="38.0" />
+
+                        <h2>Rotate camera Y axis</h2><input  id = "y_camera_slider" class="slider2"  type="range" min="-360.0" max="360.0" step="1" value="142.0" />
+
+                        <h2>Camera Radius</h2><input  id = "Radius_slider" class="slider2"  type="range" min="5.0" max="100.0" step="1" value="20.0"/>
+
+                        <h2>Field of view Y axis</h2><input  id = "FOVy_slider" class="slider2"  type="range" min="5.0" max="100.0" step="1" value="70.0" />  
+                        </div>
+                        </div>
+                </div>
+    </div>
+
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+#version 300 es
+
+in vec4 aPosition;
+in vec4 aColor;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+
+out vec4 vColor;
+in vec2 aTexCoord;
+out vec2 vTexCoord;
+
+in vec4 aNormal;
+uniform vec4 uLightPosition;
+out vec3 L; 
+out vec3 V;
+
+vec3 N; 
+vec3 T;
+vec3 B;
+vec3 eyePosition;
+vec3 eyeLightPos;
+
+uniform mat3 uNormalMatrix;
+uniform vec3 uObjTangent;
+
+void main()
+{   
+    
+    eyePosition = (modelViewMatrix*aPosition).xyz;
+    eyeLightPos = (modelViewMatrix*uLightPosition).xyz;
+
+    N = normalize(uNormalMatrix*aNormal.xyz);
+    T  = normalize(uNormalMatrix*uObjTangent);
+    B = cross(N, T);
+
+    L.x = dot(T, eyeLightPos-eyePosition);
+    L.y = dot(T, eyeLightPos-eyePosition);
+    L.z = dot(N, eyeLightPos-eyePosition);
+
+    L = normalize(L);
+
+
+    V.x = dot(T, -eyePosition);
+    V.y = dot(B, -eyePosition);
+    V.z = dot(N, -eyePosition);
+
+    V = normalize(V);
+
+    // compute tex coords and vertices positions
+    vTexCoord = aTexCoord;
+    gl_Position = projectionMatrix * modelViewMatrix * aPosition;
+    
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+#version 300 es
+
+precision mediump float;
+
+in vec4 vColor;
+out vec4 fColor;
+
+in vec2 vTexCoord;
+uniform sampler2D uTexMap;
+uniform sampler2D uTexMap_1;
+uniform sampler2D uTexMap_2;
+uniform sampler2D uTexMap_3;
+uniform sampler2D uTexMap_4;
+
+//rendering flags
+uniform float isGrass;
+uniform float isFence;
+uniform float isFace;
+uniform float isBody;
+
+in vec3 L;
+uniform vec4 uDiffuseProduct;
+
+void main()
+{   
+    //bump texture computations 
+    vec4 N = texture(uTexMap, vTexCoord);
+    vec3 NN =  normalize(2.0*N.xyz-1.0);
+    vec3 LL = normalize(L);
+    float Kd = max(dot(NN, LL), 0.0);
+    vec4 bump_texture_term = vec4(Kd*uDiffuseProduct.xyz, 1.0);
+
+    //color textures computations 
+    vec4 color_texture_wool = texture(uTexMap_1, vTexCoord);
+    vec4 color_texture_grass = texture(uTexMap_2, vTexCoord);
+    vec4 color_texture_sheep_face = texture(uTexMap_3, vTexCoord);
+    vec4 color_texture_wood = texture(uTexMap_4, vTexCoord);
+
+    if(isGrass == 1.0){
+        fColor = color_texture_grass;
+    }else if (isFace == 1.0){
+        fColor = color_texture_sheep_face;
+    }else if (isBody == 1.0){
+      fColor = vec4(color_texture_wool[0]*0.8,color_texture_wool[1]*0.8,color_texture_wool[2]*0.8,1) + bump_texture_term;
+    }else if (isFence == 1.0){
+      fColor =color_texture_wood;
+    }
+    else{
+       fColor = vec4(0.3 ,0.3, 0.3, 1.0);
+    }
+    fColor.a = 1.0;
+}
+</script>
+
+<script type="text/javascript" src="../Common/InitShaders.js"></script>
+<script type="text/javascript" src="../Common/MVnew.js"></script>
+<script type="text/javascript" src="texture_data.js"></script>
+<script type="text/javascript" src="Homework2.js"></script>
+
+</body>
+</html>
